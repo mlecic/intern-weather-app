@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { API_APP_ID, API_WEATHER_ENDPOINT } from './utils/constants';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit {
 
   private fetchRequest() {
     this.http
-    .get('https://api.openweathermap.org/data/2.5/weather?lat=44.8178131&lon=20.4568974&appid=5637da4b8906e7d92ccc594c24b3a782&units=metric')
+    .get(`${API_WEATHER_ENDPOINT}/weather?lat=44.8178131&lon=20.4568974&appid=${API_APP_ID}&units=metric`)
     .subscribe((data: any) => {
       this.response = data;      
     });
@@ -28,7 +29,7 @@ export class AppComponent implements OnInit {
 
   private fetchPolutionRequest() {
     this.http
-    .get('http://api.openweathermap.org/data/2.5/air_pollution?lat=44.8178&lon=20.4569&appid=5637da4b8906e7d92ccc594c24b3a782')
+    .get(`${API_WEATHER_ENDPOINT}/air_pollution?lat=44.8178&lon=20.4569&appid=${API_APP_ID}`)
     .subscribe((dataPol: any) => {
       this.responsePolution = dataPol;      
     });
