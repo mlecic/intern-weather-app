@@ -14,10 +14,4 @@ export class CurrentWeatherService {
     .get(`${API_WEATHER_ENDPOINT}/weather?q=${cityName}&appid=${API_APP_ID}&units=metric`);
     
   }
-
-  public fetchPolution(lat: number, lon:number) {
-    return this.http
-    .get(`${API_WEATHER_ENDPOINT}/air_pollution?lat=${lat}&lon=${lon}&appid=${API_APP_ID}`);
-
-  }
 }
