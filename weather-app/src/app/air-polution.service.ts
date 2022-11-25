@@ -9,6 +9,11 @@ export class AirPolutionService {
 
   constructor(public http: HttpClient) { }
 
+  /*
+    TODO: Air Polution should be created
+    as a component. Now it has hardcoded values
+  */
+
   public fetchPolution(lat: number, lon:number) {
     return this.http
     .get(`${API_WEATHER_ENDPOINT}/air_pollution?lat=${lat}&lon=${lon}&appid=${API_APP_ID}`);
