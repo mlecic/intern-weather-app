@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { CurrentWeatherService } from './current-weather.service';
 import { CurrentWeatherComponent } from './current-weather/current-weather.component';
 import { SearchCityComponent } from './search-city/search-city.component';
+import { AirPolutionComponent } from './air-polution/air-polution.component';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { SearchCityComponent } from './search-city/search-city.component';
     AppComponent,
     CurrentWeatherComponent,
     SearchCityComponent,
+    AirPolutionComponent,
   ],
   imports: [
     BrowserModule,

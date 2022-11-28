@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AirPolutionService } from './air-polution.service';
 
 
 @Component({
@@ -9,18 +8,9 @@ import { AirPolutionService } from './air-polution.service';
 })
 export class AppComponent implements OnInit {
   
-  responsePolution: any;
+  constructor() { }
 
-  constructor(private airPolutionService: AirPolutionService) { }
-
-  ngOnInit(): void {    
-
-    this.airPolutionService.fetchPolution(44.804, 20.4651).subscribe((dataPol: any) => {
-      this.responsePolution = dataPol;  
-           
-    });
-    
-  }  
+  ngOnInit(): void { }  
 }
 
 

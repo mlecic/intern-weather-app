@@ -1,0 +1,33 @@
+<div *ngIf="responsePolution">
+    <h2>AirPolution</h2>
+    <h4 
+    *ngIf="
+        responsePolution?.list[0].main.aqi === 1
+    ">
+        AQI: Good
+    </h4>
+    <h4 
+    *ngIf="
+        responsePolution?.list[0].main.aqi === 2
+    ">
+        AQI: Fair
+    </h4>
+    <h4 
+    *ngIf="
+        responsePolution?.list[0].main.aqi === 3
+    ">
+        AQI: Moderate
+    </h4>
+    <h4 
+    *ngIf="
+        responsePolution?.list[0].main.aqi === 4
+    ">
+        AQI: Poor
+    </h4>
+    <h4 
+    *ngIf="
+        responsePolution?.list[0].main.aqi === 5
+    ">
+        AQI: Very Poor
+    </h4>
+</div>
