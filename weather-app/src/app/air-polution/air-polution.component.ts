@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { switchMap } from 'rxjs/operators';
 import { AirPolutionService } from '../air-polution.service';
 import { CurrentWeatherService } from '../current-weather.service';
 
@@ -27,17 +28,24 @@ export class AirPolutionComponent implements OnInit {
   */
 
   ngOnInit(): void {
-    this.currentWeatherService.getCurrentCityWeather().subscribe(data => {
-      this.response = data;
-      this.fetchedCoordinates();
 
+    this.currentWeatherService.getCurrentCityWeather().pipe(
+      switchMap((currentWeatherInfo: any) => {
+        return this.airPolutionService.fetchPolution(currentWeatherInfo.coord.lat, currentWeatherInfo.coord.lon);
+      })
+    ).subscribe((airPollutionInfo: any) => {
+      this.responsePolution = airPollutionInfo;
     })
+
+    // this.currentWeatherService.getCurrentCityWeather().subscribe(data => {
+    //   this.response = data;
+    //   this.fetchedCoordinates();
+    // })
   }
 
-  fetchedCoordinates(): void {
-    this.airPolutionService.fetchPolution(this.response.coord.lat, this.response.coord.lon).subscribe(dataPol => {
-      this.responsePolution = dataPol;  
-      
-    });
-  }
+  // fetchedCoordinates(): void {
+  //   this.airPolutionService.fetchPolution(this.response.coord.lat, this.response.coord.lon).subscribe(dataPol => {
+  //     this.responsePolution = dataPol;
+  //   });
+  // }
 }
