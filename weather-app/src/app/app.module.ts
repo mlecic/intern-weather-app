@@ -8,6 +8,7 @@ import { CurrentWeatherService } from './current-weather.service';
 import { CurrentWeatherComponent } from './current-weather/current-weather.component';
 import { SearchCityComponent } from './search-city/search-city.component';
 import { AirPolutionComponent } from './air-polution/air-polution.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { AirPolutionComponent } from './air-polution/air-polution.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [CurrentWeatherService],
   bootstrap: [AppComponent]

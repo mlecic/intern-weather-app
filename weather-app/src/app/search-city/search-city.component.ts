@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CurrentWeatherService } from '../current-weather.service';
 
@@ -20,9 +20,9 @@ export class SearchCityComponent implements OnInit, OnDestroy {
   // this method is triggered on click and it is 
   // calling fetchCity method from current-weather.service
 
-  onClickCity(): void {
-    this.searchCitySub = this.currentWeatherService.fetchCity(this.cityName).subscribe();            
-
+  onSearchedCity(): void {
+    this.searchCitySub = this.currentWeatherService.fetchCity(this.cityName).subscribe();
+    this.cityName = '';      
   }
 
   // this method is listening and recording what user 
@@ -31,7 +31,12 @@ export class SearchCityComponent implements OnInit, OnDestroy {
 
   onEnteredInput(event: any): void {
     this.cityName = (<HTMLInputElement>event.target).value;
-    
+  }
+
+  onKey(event: KeyboardEvent) {
+    if(event.key === "Enter") {
+      this.onSearchedCity();
+    }
   }
 
   ngOnDestroy(): void {
