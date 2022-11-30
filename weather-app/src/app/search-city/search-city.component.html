@@ -1,5 +1,9 @@
 <h2>Enter city for weather info:</h2>
-<input type="text" (input)="onEnteredInput($event)">
+<input
+    type="text" 
+    (input)="onEnteredInput($event)"
+    (keyup)="onKey($event)"
+    [(ngModel)]="cityName">
 <br>
-<button (click)="onClickCity()">Search</button>
+<button (click)="onSearchedCity()">Search</button>
 
