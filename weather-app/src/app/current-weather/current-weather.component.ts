@@ -10,6 +10,7 @@ import { CurrentWeatherService } from '../current-weather.service';
 })
 export class CurrentWeatherComponent implements OnInit, OnDestroy {
   response: any;
+
   /*
     currentCityWeatherSub is a Subsription, which will be 
     used once this component is init and because it is 
@@ -29,7 +30,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   
   ngOnInit(): void {
     this.currentCityWeatherSub = this.currentWeatherService.getCurrentCityWeather().subscribe(data => {
-      this.response = data
+      this.response = data;
     });    
   }
 

@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { switchMap } from 'rxjs/operators';
+import { Component, Input, OnInit } from '@angular/core';
 import { AirPollutionService } from 'src/app/air-pollution.service';
 import { AIR_POLLUTION } from 'src/app/utils/constants';
-import { CurrentWeatherService } from 'src/app/current-weather.service';
 
 @Component({
   selector: 'app-air-pollution',
@@ -11,13 +9,14 @@ import { CurrentWeatherService } from 'src/app/current-weather.service';
 })
 
 export class AirPollutionComponent implements OnInit {
-
+  
+  @Input() lat = 0;
+  @Input() lon = 0;
   response: any;
   responsePollution: any;
   responsePollutionValue: string = "";
 
-  constructor(private airPollutionService: AirPollutionService, 
-              private currentWeatherService: CurrentWeatherService) { }
+  constructor(private airPollutionService: AirPollutionService) { }
 
   /*
     On init component is created but waiting on button to be clicked.
@@ -31,15 +30,13 @@ export class AirPollutionComponent implements OnInit {
   */
 
   ngOnInit(): void {
-
-    this.currentWeatherService.getCurrentCityWeather().pipe(
-      switchMap((currentWeatherInfo: any) => {
-        return this.airPollutionService.fetchPollution(currentWeatherInfo.coord.lat, currentWeatherInfo.coord.lon);
-      })
-    ).subscribe((airPollutionInfo: any) => {
+    if(!!this.lat && !!this.lon) {      
+      this.airPollutionService.fetchPollution(this.lat, this.lon)
+      .subscribe((airPollutionInfo: any) => {
       this.responsePollution = airPollutionInfo;
       this.responsePollutionValue = this.generatePollutionLabel(airPollutionInfo.list[0]?.main?.aqi);
-    })
+      })
+    }
 
     // this.currentWeatherService.getCurrentCityWeather().subscribe(data => {
     //   this.response = data;
