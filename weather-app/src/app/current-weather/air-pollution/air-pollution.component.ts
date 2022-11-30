@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { switchMap } from 'rxjs/operators';
-import { AirPollutionService } from '../air-pollution.service';
-import { CurrentWeatherService } from '../current-weather.service';
-import { AIR_POLLUTION } from '../utils/constants';
+import { AirPollutionService } from 'src/app/air-pollution.service';
+import { AIR_POLLUTION } from 'src/app/utils/constants';
+import { CurrentWeatherService } from 'src/app/current-weather.service';
 
 @Component({
   selector: 'app-air-pollution',
   templateUrl: './air-pollution.component.html',
   styleUrls: ['./air-pollution.component.scss']
 })
+
 export class AirPollutionComponent implements OnInit {
 
   response: any;
