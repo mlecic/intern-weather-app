@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AirPolutionComponent } from './air-polution.component';
+import { AirPollutionComponent } from './air-pollution.component';
 
-describe('AirPolutionComponent', () => {
-  let component: AirPolutionComponent;
-  let fixture: ComponentFixture<AirPolutionComponent>;
+describe('AirPollutionComponent', () => {
+  let component: AirPollutionComponent;
+  let fixture: ComponentFixture<AirPollutionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AirPolutionComponent ]
+      declarations: [ AirPollutionComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AirPolutionComponent);
+    fixture = TestBed.createComponent(AirPollutionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
