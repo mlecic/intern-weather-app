@@ -5,13 +5,13 @@ import { API_APP_ID, API_WEATHER_ENDPOINT } from './utils/constants';
 @Injectable({
   providedIn: 'root'
 })
-export class AirPolutionService {
+export class AirPollutionService {
   
   constructor(public http: HttpClient) { }
  
-  // fetchPolution method is getting data from selected URL
+  // fetchPollution method is getting data from selected URL
   
-  public fetchPolution(lat: number, lon: number) {
+  public fetchPollution(lat: number, lon: number) {
     return this.http
     .get(`${API_WEATHER_ENDPOINT}/air_pollution?lat=${lat}&lon=${lon}&appid=${API_APP_ID}`);
   }

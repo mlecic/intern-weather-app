@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { switchMap } from 'rxjs/operators';
-import { AirPolutionService } from '../air-polution.service';
+import { AirPollutionService } from '../air-pollution.service';
 import { CurrentWeatherService } from '../current-weather.service';
 import { AIR_POLLUTION } from '../utils/constants';
 
 @Component({
-  selector: 'app-air-polution',
-  templateUrl: './air-polution.component.html',
-  styleUrls: ['./air-polution.component.scss']
+  selector: 'app-air-pollution',
+  templateUrl: './air-pollution.component.html',
+  styleUrls: ['./air-pollution.component.scss']
 })
-export class AirPolutionComponent implements OnInit {
+export class AirPollutionComponent implements OnInit {
 
   response: any;
-  responsePolution: any;
-  responsePolutionValue: string = "";
+  responsePollution: any;
+  responsePollutionValue: string = "";
 
-  constructor(private airPolutionService: AirPolutionService, 
+  constructor(private airPollutionService: AirPollutionService, 
               private currentWeatherService: CurrentWeatherService) { }
 
   /*
@@ -23,21 +23,21 @@ export class AirPolutionComponent implements OnInit {
     When the button is clicked component can get data from getCurrentCityWeather,
     data arrived, and method dataFetched is called which will use
     this.response.coord.lat and this.response.coord.lon because method
-    fetchPolution() have to have two parameters.
+    fetchPollution() have to have two parameters.
 
     Idea behind this is to use the data that already arrived with Current Weather Component
-    and use lat and lon inside Air Polution URL.
+    and use lat and lon inside Air Pollution URL.
   */
 
   ngOnInit(): void {
 
     this.currentWeatherService.getCurrentCityWeather().pipe(
       switchMap((currentWeatherInfo: any) => {
-        return this.airPolutionService.fetchPolution(currentWeatherInfo.coord.lat, currentWeatherInfo.coord.lon);
+        return this.airPollutionService.fetchPollution(currentWeatherInfo.coord.lat, currentWeatherInfo.coord.lon);
       })
     ).subscribe((airPollutionInfo: any) => {
-      this.responsePolution = airPollutionInfo;
-      this.responsePolutionValue = this.generatePollutionLabel(airPollutionInfo.list[0]?.main?.aqi);
+      this.responsePollution = airPollutionInfo;
+      this.responsePollutionValue = this.generatePollutionLabel(airPollutionInfo.list[0]?.main?.aqi);
     })
 
     // this.currentWeatherService.getCurrentCityWeather().subscribe(data => {
@@ -47,8 +47,8 @@ export class AirPolutionComponent implements OnInit {
   }
 
   // fetchedCoordinates(): void {
-  //   this.airPolutionService.fetchPolution(this.response.coord.lat, this.response.coord.lon).subscribe(dataPol => {
-  //     this.responsePolution = dataPol;
+  //   this.airPollutionService.fetchPollution(this.response.coord.lat, this.response.coord.lon).subscribe(dataPol => {
+  //     this.responsePollution = dataPol;
   //   });
   // }
 

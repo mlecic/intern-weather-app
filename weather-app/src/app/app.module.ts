@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { CurrentWeatherService } from './current-weather.service';
 import { CurrentWeatherComponent } from './current-weather/current-weather.component';
 import { SearchCityComponent } from './search-city/search-city.component';
-import { AirPolutionComponent } from './air-polution/air-polution.component';
+import { AirPollutionComponent } from './air-pollution/air-pollution.component';
 import { FormsModule } from '@angular/forms';
 
 
@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
     AppComponent,
     CurrentWeatherComponent,
     SearchCityComponent,
-    AirPolutionComponent,
+    AirPollutionComponent,
   ],
   imports: [
     BrowserModule,
