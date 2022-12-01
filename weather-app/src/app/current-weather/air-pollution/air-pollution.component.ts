@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { AirPollutionService } from 'src/app/air-pollution.service';
 import { AIR_POLLUTION } from 'src/app/utils/constants';
 
@@ -8,7 +8,7 @@ import { AIR_POLLUTION } from 'src/app/utils/constants';
   styleUrls: ['./air-pollution.component.scss']
 })
 
-export class AirPollutionComponent implements OnInit {
+export class AirPollutionComponent implements OnInit, OnChanges {
   
   @Input() lat = 0;
   @Input() lon = 0;
@@ -30,18 +30,25 @@ export class AirPollutionComponent implements OnInit {
   */
 
   ngOnInit(): void {
-    if(!!this.lat && !!this.lon) {      
-      this.airPollutionService.fetchPollution(this.lat, this.lon)
-      .subscribe((airPollutionInfo: any) => {
-      this.responsePollution = airPollutionInfo;
-      this.responsePollutionValue = this.generatePollutionLabel(airPollutionInfo.list[0]?.main?.aqi);
-      })
-    }
+    // console.log(this.lat);
+    
 
     // this.currentWeatherService.getCurrentCityWeather().subscribe(data => {
     //   this.response = data;
     //   this.fetchedCoordinates();
     // })
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(!!changes['lat'].currentValue && !!changes['lon'].currentValue) {  
+      console.log(changes);    
+      this.airPollutionService.fetchPollution(changes['lat'].currentValue, changes['lon'].currentValue)
+      .subscribe((airPollutionInfo: any) => {
+      this.responsePollution = airPollutionInfo;
+      this.responsePollutionValue = this.generatePollutionLabel(airPollutionInfo.list[0]?.main?.aqi);
+      })
+    }
+    
   }
 
   // fetchedCoordinates(): void {

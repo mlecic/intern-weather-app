@@ -1,5 +1,5 @@
 <br>
-<div *ngIf="responsePollution">
+<div ngAfterViewInit() *ngIf="responsePollution">
     <h2>Air Pollution</h2>
     <h4>AQI: {{ responsePollutionValue }}</h4>
     <h1>{{ lat }}</h1>
