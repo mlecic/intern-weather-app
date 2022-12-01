@@ -9,8 +9,7 @@ import { AIR_POLLUTION } from 'src/app/utils/constants';
   styleUrls: ['./air-pollution.component.scss']
 })
 
-export class AirPollutionComponent implements OnInit, OnChanges, OnDestroy {
-  
+export class AirPollutionComponent implements OnInit, OnChanges, OnDestroy {  
   @Input() lat = 0;
   @Input() lon = 0;
   response: any;
@@ -21,27 +20,26 @@ export class AirPollutionComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private airPollutionService: AirPollutionService) { }
 
   /*
-    On init component is created but waiting on button to be clicked.
-    When the button is clicked component can get data from getCurrentCityWeather,
-    data arrived, and method dataFetched is called which will use
-    this.response.coord.lat and this.response.coord.lon because method
-    fetchPollution() have to have two parameters.
+    ngOnChanges is beeing called before ngOnInit() (if the component has bound inputs) 
+    and whenever one or more data-bound input properties change.
+
+    ngOnChanges is called but waiting on button to be clicked.
+    When the button is clicked component can get data from getCurrentCityWeather;
+    data arrived, and method fetchPolution got parameters
 
     Idea behind this is to use the data that already arrived with Current Weather Component
-    and use lat and lon inside Air Pollution URL. 
-
-    Comments should be updated!
+    and then use lat and lon inside Air Pollution URL. 
   */
 
   ngOnInit(): void { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if(!!changes['lat'].currentValue && !!changes['lon'].currentValue) {  
-      this.currentAirPollutionSub = this.airPollutionService.fetchPollution(changes['lat'].currentValue, changes['lon'].currentValue)
-      .subscribe((airPollutionInfo: any) => {
-      this.responsePollution = airPollutionInfo;
-      this.responsePollutionValue = this.generatePollutionLabel(airPollutionInfo.list[0]?.main?.aqi);
-      })
+        this.currentAirPollutionSub = this.airPollutionService.fetchPollution(changes['lat'].currentValue, changes['lon'].currentValue)
+        .subscribe((airPollutionInfo: any) => {
+          this.responsePollution = airPollutionInfo;
+          this.responsePollutionValue = this.generatePollutionLabel(airPollutionInfo.list[0]?.main?.aqi);
+      });
     }    
   }
 

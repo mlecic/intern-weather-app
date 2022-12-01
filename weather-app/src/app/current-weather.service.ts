@@ -24,11 +24,8 @@ export class CurrentWeatherService {
     return this.http
     .get(`${API_WEATHER_ENDPOINT}/weather?q=${cityName}&appid=${API_APP_ID}&units=metric`)
     .pipe(
-      tap( data => {
-        this.currentCity$.next(data)
-                        
-      })
-    )
+      tap( data => { this.currentCity$.next(data) })
+    );
   }
 
   /*
@@ -40,6 +37,5 @@ export class CurrentWeatherService {
 
   public getCurrentCityWeather() {        
     return this.currentCity$.asObservable();
-
   }
 }

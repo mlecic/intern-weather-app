@@ -10,7 +10,6 @@ import { SearchCityComponent } from './search-city/search-city.component';
 import { FormsModule } from '@angular/forms';
 import { AirPollutionComponent } from './air-pollution/air-pollution.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,

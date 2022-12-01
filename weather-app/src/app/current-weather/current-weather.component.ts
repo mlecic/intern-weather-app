@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CurrentWeatherService } from '../current-weather.service';
 
-
 @Component({
   selector: 'app-current-weather',
   templateUrl: './current-weather.component.html',
@@ -21,6 +20,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   currentCityWeatherSub: Subscription = new Subscription();
 
   constructor(private currentWeatherService: CurrentWeatherService) { }
+
   /*
     once the page is loaded this ngOnInit is triggered 
     and current-wheather component is waiting for response
@@ -29,9 +29,8 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   */
   
   ngOnInit(): void {
-    this.currentCityWeatherSub = this.currentWeatherService.getCurrentCityWeather().subscribe(data => {
-      this.response = data;
-    });    
+    this.currentCityWeatherSub = this.currentWeatherService.getCurrentCityWeather()
+    .subscribe(data => { this.response = data });    
   }
 
   ngOnDestroy(): void {
