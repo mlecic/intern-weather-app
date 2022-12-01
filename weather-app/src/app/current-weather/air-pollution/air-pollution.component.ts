@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AirPollutionService } from 'src/app/air-pollution.service';
 import { AIR_POLLUTION } from 'src/app/utils/constants';
 
@@ -8,13 +9,14 @@ import { AIR_POLLUTION } from 'src/app/utils/constants';
   styleUrls: ['./air-pollution.component.scss']
 })
 
-export class AirPollutionComponent implements OnInit, OnChanges {
+export class AirPollutionComponent implements OnInit, OnChanges, OnDestroy {
   
   @Input() lat = 0;
   @Input() lon = 0;
   response: any;
   responsePollution: any;
   responsePollutionValue: string = "";
+  currentAirPollutionSub: Subscription = new Subscription;
 
   constructor(private airPollutionService: AirPollutionService) { }
 
@@ -26,36 +28,22 @@ export class AirPollutionComponent implements OnInit, OnChanges {
     fetchPollution() have to have two parameters.
 
     Idea behind this is to use the data that already arrived with Current Weather Component
-    and use lat and lon inside Air Pollution URL.
+    and use lat and lon inside Air Pollution URL. 
+
+    Comments should be updated!
   */
 
-  ngOnInit(): void {
-    // console.log(this.lat);
-    
-
-    // this.currentWeatherService.getCurrentCityWeather().subscribe(data => {
-    //   this.response = data;
-    //   this.fetchedCoordinates();
-    // })
-  }
+  ngOnInit(): void { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if(!!changes['lat'].currentValue && !!changes['lon'].currentValue) {  
-      console.log(changes);    
-      this.airPollutionService.fetchPollution(changes['lat'].currentValue, changes['lon'].currentValue)
+      this.currentAirPollutionSub = this.airPollutionService.fetchPollution(changes['lat'].currentValue, changes['lon'].currentValue)
       .subscribe((airPollutionInfo: any) => {
       this.responsePollution = airPollutionInfo;
       this.responsePollutionValue = this.generatePollutionLabel(airPollutionInfo.list[0]?.main?.aqi);
       })
-    }
-    
+    }    
   }
-
-  // fetchedCoordinates(): void {
-  //   this.airPollutionService.fetchPollution(this.response.coord.lat, this.response.coord.lon).subscribe(dataPol => {
-  //     this.responsePollution = dataPol;
-  //   });
-  // }
 
   generatePollutionLabel(aqi: number): string {
     if(!aqi) return "";
@@ -74,5 +62,9 @@ export class AirPollutionComponent implements OnInit, OnChanges {
       default: label = "";
     }
     return label;
+  }
+
+  ngOnDestroy(): void {
+    this.currentAirPollutionSub.unsubscribe();
   }
 }
