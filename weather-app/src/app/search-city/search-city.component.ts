@@ -14,15 +14,14 @@ export class SearchCityComponent implements OnInit, OnDestroy {
   
   constructor(private currentWeatherService: CurrentWeatherService) { }
 
-  ngOnInit(): void {    
-  }
+  ngOnInit(): void { }
 
   // this method is triggered on click and it is 
   // calling fetchCity method from current-weather.service
 
   onSearchedCity(): void {
     this.searchCitySub = this.currentWeatherService.fetchCity(this.cityName).subscribe();
-    this.cityName = '';      
+    this.cityName = '';
   }
 
   // this method is listening and recording what user 
