@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AirPollutionService } from 'src/app/air-pollution.service';
+import { AirPollutionService, AirPollution } from 'src/app/air-pollution.service';
 import { AIR_POLLUTION } from 'src/app/utils/constants';
 
 @Component({
@@ -12,10 +12,9 @@ import { AIR_POLLUTION } from 'src/app/utils/constants';
 export class AirPollutionComponent implements OnInit, OnChanges, OnDestroy {  
   @Input() lat = 0;
   @Input() lon = 0;
-  response: any;
-  responsePollution: any;
-  responsePollutionValue: string = "";
-  currentAirPollutionSub: Subscription = new Subscription;
+  responsePollution: AirPollution;
+  responsePollutionValue = "";
+  currentAirPollutionSub: Subscription;
 
   constructor(private airPollutionService: AirPollutionService) { }
 
@@ -36,7 +35,7 @@ export class AirPollutionComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     if(!!changes['lat'].currentValue && !!changes['lon'].currentValue) {  
         this.currentAirPollutionSub = this.airPollutionService.fetchPollution(changes['lat'].currentValue, changes['lon'].currentValue)
-        .subscribe((airPollutionInfo: any) => {
+        .subscribe((airPollutionInfo: AirPollution) => {
           this.responsePollution = airPollutionInfo;
           this.responsePollutionValue = this.generatePollutionLabel(airPollutionInfo.list[0]?.main?.aqi);
       });
