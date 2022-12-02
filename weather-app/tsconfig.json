@@ -21,7 +21,8 @@
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    "strictPropertyInitialization": false // This disables error Property '...' has no initializer and is not definitely assigned in the constructor
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

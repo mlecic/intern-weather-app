@@ -1,8 +1,51 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_APP_ID, API_WEATHER_ENDPOINT } from './utils/constants';
-import { Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+export interface Weather {
+  id: number,
+  main: string,
+  description: string,
+  icon: string
+}
+export interface CurrentWeather {
+  coord: {
+        lon: number,
+        lat: number
+    },
+    weather: Weather[],
+    base: string,
+    main: {
+        temp: number,
+        feels_like: number,
+        temp_min: number,
+        temp_max: number,
+        pressure: number,
+        humidity: number
+    },
+    visibility: number,
+    wind: {
+        speed: number,
+        deg: number
+    },
+    clouds: {
+        all: number
+    },
+    dt: number,
+    sys: {
+        type: number,
+        id: number,
+        country: string,
+        sunrise: number,
+        sunset: number
+    },
+    timezone: number,
+    id: number,
+    name: string,
+    cod: number
+}
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +53,7 @@ import { tap } from 'rxjs/operators';
 export class CurrentWeatherService {
 
   // currentCity$ is an Observable that will be multicasted 
-  private currentCity$ = new Subject<any>();
+  private currentCity$ = new Subject<CurrentWeather>();
 
   constructor(public http: HttpClient) { }
 
@@ -20,11 +63,13 @@ export class CurrentWeatherService {
     and it will get the data for further use
   */
 
-  public fetchCity(cityName: string) {
-    return this.http
-    .get(`${API_WEATHER_ENDPOINT}/weather?q=${cityName}&appid=${API_APP_ID}&units=metric`)
-    .pipe(
-      tap( data => { this.currentCity$.next(data) })
+  public fetchCity(cityName: string): Observable<CurrentWeather> {
+    const url = `${API_WEATHER_ENDPOINT}/weather?q=${cityName}&appid=${API_APP_ID}&units=metric`;
+    return this.http.get<CurrentWeather>(url).pipe(
+      map((data: CurrentWeather) => {
+        this.currentCity$.next(data);
+        return data;
+      })
     );
   }
 
@@ -35,7 +80,7 @@ export class CurrentWeatherService {
     to be called
   */
 
-  public getCurrentCityWeather() {        
+  public getCurrentCityWeather(): Observable<CurrentWeather> {        
     return this.currentCity$.asObservable();
   }
 }

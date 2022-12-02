@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { CurrentWeatherService } from '../current-weather.service';
+import { CurrentWeatherService, CurrentWeather } from '../current-weather.service';
 
 @Component({
   selector: 'app-current-weather',
@@ -8,7 +8,7 @@ import { CurrentWeatherService } from '../current-weather.service';
   styleUrls: ['./current-weather.component.scss']
 })
 export class CurrentWeatherComponent implements OnInit, OnDestroy {
-  response: any;
+  response: CurrentWeather;
 
   /*
     currentCityWeatherSub is a Subsription, which will be 
@@ -30,7 +30,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   
   ngOnInit(): void {
     this.currentCityWeatherSub = this.currentWeatherService.getCurrentCityWeather()
-    .subscribe(data => { this.response = data });    
+    .subscribe((data: CurrentWeather) => { this.response = data });    
   }
 
   ngOnDestroy(): void {
