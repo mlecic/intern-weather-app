@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CurrentWeatherService } from '../current-weather.service';
 
@@ -8,9 +8,8 @@ import { CurrentWeatherService } from '../current-weather.service';
   styleUrls: ['./search-city.component.scss']
 })
 export class SearchCityComponent implements OnInit, OnDestroy {
-  response: any;
   cityName = '';
-  searchCitySub: Subscription = new Subscription();
+  searchCitySub: Subscription;
   
   constructor(private currentWeatherService: CurrentWeatherService) { }
 
