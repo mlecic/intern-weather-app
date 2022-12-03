@@ -82,5 +82,5 @@ export class CurrentWeatherService {
 
   public getCurrentCityWeather(): Observable<CurrentWeather> {        
     return this.currentCity$.asObservable();
-  }
+  }  
 }
