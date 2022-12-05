@@ -3,11 +3,12 @@
     but only visible once it gets response.
  -->
 <div *ngIf="response">
-    <h2>City: {{ response.name}}</h2>
+    <h2>City: {{ response.name }}</h2>
+    <img [src]="imagePath" [alt]="response.weather[0].description">    
     <h4>Coordinates: <br>lat: {{ response.coord.lat }}, lon: {{ response.coord.lon }}</h4>
     <h4>Weather: {{ response.weather[0].main}}</h4>
     <h4>Descripton: {{ response.weather[0].description}}</h4>    
     <h4>Current Temperature: {{ response.main.temp }} °C</h4>
     <h4>Feels Like: {{ response.main.feels_like }} °C</h4>
-    <app-air-pollution [lat]="response.coord.lat" [lon]="response.coord.lon"></app-air-pollution>
+    <app-air-pollution [lat]="response.coord.lat" [lon]="response.coord.lon"></app-air-pollution>    
 </div>

@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { CurrentWeatherService, CurrentWeather } from '../current-weather.service';
+import { CurrentWeatherService, CurrentWeather, Weather } from '../current-weather.service';
 
 @Component({
   selector: 'app-current-weather',
@@ -9,6 +10,8 @@ import { CurrentWeatherService, CurrentWeather } from '../current-weather.servic
 })
 export class CurrentWeatherComponent implements OnInit, OnDestroy {
   response: CurrentWeather;
+  iconValue: Weather["icon"];
+  imagePath = '';
 
   /*
     currentCityWeatherSub is a Subsription, which will be 
@@ -30,7 +33,11 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   
   ngOnInit(): void {
     this.currentCityWeatherSub = this.currentWeatherService.getCurrentCityWeather()
-    .subscribe((data: CurrentWeather) => { this.response = data });    
+    .subscribe((data: CurrentWeather) => { 
+      this.response = data
+      this.iconValue = this.response.weather[0].icon;
+      this.imagePath = `https://openweathermap.org/img/wn/${this.iconValue}@2x.png`;
+    });
   }
 
   ngOnDestroy(): void {
