@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { CurrentWeatherService, CurrentWeather, Weather } from '../current-weather.service';
+import { FavoritesService } from '../favorites.service';
 
 @Component({
   selector: 'app-current-weather',
@@ -22,7 +22,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
 
   currentCityWeatherSub: Subscription = new Subscription();
 
-  constructor(private currentWeatherService: CurrentWeatherService) { }
+  constructor(private currentWeatherService: CurrentWeatherService, private favoritesService: FavoritesService) { }
 
   /*
     once the page is loaded this ngOnInit is triggered 
@@ -38,6 +38,10 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
       this.iconValue = this.response.weather[0].icon;
       this.imagePath = `https://openweathermap.org/img/wn/${this.iconValue}@2x.png`;
     });
+  }
+
+  addToFavorites(): void {
+    this.favoritesService.addFavorite(this.response.id, this.response.name);
   }
 
   ngOnDestroy(): void {
