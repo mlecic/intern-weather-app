@@ -11,7 +11,9 @@ import { CurrentWeatherService, CurrentWeather, Weather } from '../current-weath
 export class CurrentWeatherComponent implements OnInit, OnDestroy {
   response: CurrentWeather;
   iconValue: Weather["icon"];
+  descriptionValue: Weather["description"];
   imagePath = '';
+  imageDescription = '';
 
   /*
     currentCityWeatherSub is a Subsription, which will be 
@@ -37,6 +39,8 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
       this.response = data
       this.iconValue = this.response.weather[0].icon;
       this.imagePath = `https://openweathermap.org/img/wn/${this.iconValue}@2x.png`, this.iconValue;
+      this.descriptionValue = this.response.weather[0].description;
+      this.imageDescription = `${this.descriptionValue}`, this.descriptionValue;
     });
   }
 

@@ -4,7 +4,7 @@
  -->
 <div *ngIf="response">
     <h2>City: {{ response.name }}</h2>
-    <img [src]="imagePath" alt="picture not available">    
+    <img [src]="imagePath" [alt]="imageDescription">    
     <h4>Coordinates: <br>lat: {{ response.coord.lat }}, lon: {{ response.coord.lon }}</h4>
     <h4>Weather: {{ response.weather[0].main}}</h4>
     <h4>Descripton: {{ response.weather[0].description}}</h4>    
