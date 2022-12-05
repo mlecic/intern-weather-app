@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_APP_ID, API_WEATHER_ENDPOINT } from './utils/constants';
-import { Subject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Subject, Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 export interface Weather {
   id: number,
@@ -52,7 +52,7 @@ export interface CurrentWeather {
 })
 export class CurrentWeatherService {
 
-  // currentCity$ is an Observable that will be multicasted 
+  // currentCity$ it is not an Observable, but can be returned as one and it will be multicasted 
   private currentCity$ = new Subject<CurrentWeather>();
 
   constructor(public http: HttpClient) { }
@@ -65,10 +65,15 @@ export class CurrentWeatherService {
 
   public fetchCity(cityName: string): Observable<CurrentWeather> {
     const url = `${API_WEATHER_ENDPOINT}/weather?q=${cityName}&appid=${API_APP_ID}&units=metric`;
-    return this.http.get<CurrentWeather>(url).pipe(
+    return this.http.get<CurrentWeather>(url)
+    .pipe(
       map((data: CurrentWeather) => {
         this.currentCity$.next(data);
         return data;
+      }),
+      catchError(error => {
+        this.currentCity$.error(error);
+        return throwError(() => new Error('Error; please try again later.'));        
       })
     );
   }
@@ -82,5 +87,5 @@ export class CurrentWeatherService {
 
   public getCurrentCityWeather(): Observable<CurrentWeather> {        
     return this.currentCity$.asObservable();
-  }  
+  }
 }
