@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { API_APP_ID, API_WEATHER_ENDPOINT } from './utils/constants';
-import { Subject, Observable, EMPTY } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 export interface Weather {
   id: number,
@@ -53,8 +52,8 @@ export interface CurrentWeather {
 export class CurrentWeatherService {
 
   // currentCity$ it is not an Observable, but can be returned as one and it will be multicasted 
-  private currentCity$ = new Subject<CurrentWeather>();
-  private currentCityErrors$ = new Subject<HttpErrorResponse>();
+  currentCity$ = new Subject<CurrentWeather>();
+  currentCityErrors$ = new Subject<HttpErrorResponse>();
 
   constructor(public http: HttpClient) { }
 
@@ -68,29 +67,16 @@ export class CurrentWeatherService {
     const url = `${API_WEATHER_ENDPOINT}/weather?q=${cityName}&appid=${API_APP_ID}&units=metric`;
     // Fetch current weather - http.get will take one response and complete immediately
     this.http.get<CurrentWeather>(url)
-    .pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.currentCityErrors$.next(error);
-        return EMPTY;        
-      })
-    ).subscribe(data => {
-      // Emmit value on thi observable - components subscribe to this to get value
-      this.currentCity$.next(data);
+    .subscribe({
+        next: data => {
+          // Emmit value on this observable - components subscribe to this to get value
+          this.currentCity$.next(data);
+        },
+        error: error => {
+          // http.get recognizes 404 status and emits rxjs error - obs.error('some error')
+          // Emmit value on this observable - components subscribe to this to get errors
+          this.currentCityErrors$.next(error);
+        }
     });
-  }
-
-  /*
-    this method is called from ngOnInit from current-weather.component
-    and it will be used as Observer for currentCity$ ->
-    -> waiting for method fetchCity from search-city.component
-    to be called
-  */
-
-  public getCurrentCityWeather(): Observable<CurrentWeather> {        
-    return this.currentCity$.asObservable();
-  }
-
-  public getCurrentCityWeatherErrors(): Observable<HttpErrorResponse> {        
-    return this.currentCityErrors$.asObservable();
   }
 }

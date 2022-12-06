@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CurrentWeatherService, CurrentWeather, Weather } from '../current-weather.service';
@@ -37,7 +38,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     // Get current weather
-    this.currentCityWeatherSub = this.currentWeatherService.getCurrentCityWeather()
+    this.currentCityWeatherSub = this.currentWeatherService.currentCity$
     .subscribe((data: CurrentWeather) => {
         this.error = false;
         this.response = data;     
@@ -46,8 +47,8 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
       });
 
     // Get current weather errors
-    this.currentCityWeatherErrorsSub = this.currentWeatherService.getCurrentCityWeatherErrors()
-    .subscribe((error) => {
+    this.currentCityWeatherErrorsSub = this.currentWeatherService.currentCityErrors$
+    .subscribe((error: HttpErrorResponse) => {
       console.log("Bad city name", error);
       this.error = true;
     });
