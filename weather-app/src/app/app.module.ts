@@ -9,13 +9,15 @@ import { CurrentWeatherComponent } from './current-weather/current-weather.compo
 import { SearchCityComponent } from './search-city/search-city.component';
 import { FormsModule } from '@angular/forms';
 import { AirPollutionComponent } from './air-pollution/air-pollution.component';
+import { FavCitiesComponent } from './fav-cities/fav-cities.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CurrentWeatherComponent,
     SearchCityComponent,
-    AirPollutionComponent
+    AirPollutionComponent,
+    FavCitiesComponent
   ],
   imports: [
     BrowserModule,
