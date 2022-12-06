@@ -23,6 +23,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   */
 
   currentCityWeatherSub: Subscription = new Subscription();
+  currentCityWeatherErrorsSub: Subscription = new Subscription();
 
   constructor(private currentWeatherService: CurrentWeatherService, private favoritesService: FavoritesService) { }
 
@@ -34,15 +35,21 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   */
   
   ngOnInit(): void {
+
+    // Get current weather
     this.currentCityWeatherSub = this.currentWeatherService.getCurrentCityWeather()
-    .subscribe({
-      next: (data: CurrentWeather) => {
+    .subscribe((data: CurrentWeather) => {
+        this.error = false;
         this.response = data;     
         this.iconValue = this.response.weather[0].icon;
         this.imagePath = `https://openweathermap.org/img/wn/${this.iconValue}@2x.png`;
-        this.error = false;
-      },
-      error: error => { this.error = true }
+      });
+
+    // Get current weather errors
+    this.currentCityWeatherErrorsSub = this.currentWeatherService.getCurrentCityWeatherErrors()
+    .subscribe((error) => {
+      console.log("Bad city name", error);
+      this.error = true;
     });
   }
 

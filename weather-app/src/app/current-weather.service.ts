@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { API_APP_ID, API_WEATHER_ENDPOINT } from './utils/constants';
 import { Subject, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -54,6 +54,7 @@ export class CurrentWeatherService {
 
   // currentCity$ it is not an Observable, but can be returned as one and it will be multicasted 
   private currentCity$ = new Subject<CurrentWeather>();
+  private currentCityErrors$ = new Subject<HttpErrorResponse>();
 
   constructor(public http: HttpClient) { }
 
@@ -71,8 +72,8 @@ export class CurrentWeatherService {
         this.currentCity$.next(data);
         return data;
       }),
-      catchError(error => {
-        this.currentCity$.error(error);
+      catchError((error: HttpErrorResponse) => {
+        this.currentCityErrors$.next(error);
         return throwError(() => new Error('Error; please try again later.'));        
       })
     );
@@ -87,5 +88,9 @@ export class CurrentWeatherService {
 
   public getCurrentCityWeather(): Observable<CurrentWeather> {        
     return this.currentCity$.asObservable();
+  }
+
+  public getCurrentCityWeatherErrors(): Observable<HttpErrorResponse> {        
+    return this.currentCityErrors$.asObservable();
   }
 }
