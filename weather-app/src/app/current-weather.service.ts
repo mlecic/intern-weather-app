@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { API_APP_ID, API_WEATHER_ENDPOINT } from './utils/constants';
-import { Subject, Observable, throwError } from 'rxjs';
+import { Subject, Observable, EMPTY } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 export interface Weather {
@@ -74,7 +74,7 @@ export class CurrentWeatherService {
       }),
       catchError((error: HttpErrorResponse) => {
         this.currentCityErrors$.next(error);
-        return throwError(() => new Error('Error; please try again later.'));        
+        return EMPTY;        
       })
     );
   }
