@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CurrentWeatherService, CurrentWeather, Weather } from '../current-weather.service';
@@ -23,6 +24,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   */
 
   currentCityWeatherSub: Subscription = new Subscription();
+  currentCityWeatherErrorsSub: Subscription = new Subscription();
 
   constructor(private currentWeatherService: CurrentWeatherService, private favoritesService: FavoritesService) { }
 
@@ -34,15 +36,21 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   */
   
   ngOnInit(): void {
-    this.currentCityWeatherSub = this.currentWeatherService.getCurrentCityWeather()
-    .subscribe({
-      next: (data: CurrentWeather) => {
+
+    // Get current weather
+    this.currentCityWeatherSub = this.currentWeatherService.currentCity$
+    .subscribe((data: CurrentWeather) => {
+        this.error = false;
         this.response = data;     
         this.iconValue = this.response.weather[0].icon;
         this.imagePath = `https://openweathermap.org/img/wn/${this.iconValue}@2x.png`;
-        this.error = false;
-      },
-      error: error => { this.error = true }
+      });
+
+    // Get current weather errors
+    this.currentCityWeatherErrorsSub = this.currentWeatherService.currentCityErrors$
+    .subscribe((error: HttpErrorResponse) => {
+      console.log("Bad city name", error);
+      this.error = true;
     });
   }
 
