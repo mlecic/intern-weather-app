@@ -9,7 +9,6 @@ import { CurrentWeatherService } from '../current-weather.service';
 })
 export class SearchCityComponent implements OnInit, OnDestroy {
   cityName = '';
-  searchCitySub: Subscription;
   
   constructor(private currentWeatherService: CurrentWeatherService) { }
 
@@ -19,7 +18,7 @@ export class SearchCityComponent implements OnInit, OnDestroy {
   // calling fetchCity method from current-weather.service
 
   onSearchedCity(): void {
-    this.searchCitySub = this.currentWeatherService.fetchCity(this.cityName).subscribe();
+    this.currentWeatherService.fetchCity(this.cityName);
     this.cityName = '';
   }
 
@@ -38,7 +37,6 @@ export class SearchCityComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.searchCitySub.unsubscribe();
   }
 
 }

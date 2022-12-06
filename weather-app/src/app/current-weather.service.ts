@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { API_APP_ID, API_WEATHER_ENDPOINT } from './utils/constants';
 import { Subject, Observable, EMPTY } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 export interface Weather {
   id: number,
@@ -64,19 +64,19 @@ export class CurrentWeatherService {
     and it will get the data for further use
   */
 
-  public fetchCity(cityName: string): Observable<CurrentWeather> {
+  public fetchCity(cityName: string): void {
     const url = `${API_WEATHER_ENDPOINT}/weather?q=${cityName}&appid=${API_APP_ID}&units=metric`;
-    return this.http.get<CurrentWeather>(url)
+    // Fetch current weather - http.get will take one response and complete immediately
+    this.http.get<CurrentWeather>(url)
     .pipe(
-      map((data: CurrentWeather) => {
-        this.currentCity$.next(data);
-        return data;
-      }),
       catchError((error: HttpErrorResponse) => {
         this.currentCityErrors$.next(error);
         return EMPTY;        
       })
-    );
+    ).subscribe(data => {
+      // Emmit value on thi observable - components subscribe to this to get value
+      this.currentCity$.next(data);
+    });
   }
 
   /*
