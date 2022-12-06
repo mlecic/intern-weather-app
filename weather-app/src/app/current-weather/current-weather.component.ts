@@ -26,7 +26,8 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   currentCityWeatherSub: Subscription = new Subscription();
   currentCityWeatherErrorsSub: Subscription = new Subscription();
 
-  constructor(private currentWeatherService: CurrentWeatherService, private favoritesService: FavoritesService) { }
+  constructor(private currentWeatherService: CurrentWeatherService, 
+              private favoritesService: FavoritesService) { }
 
   /*
     once the page is loaded this ngOnInit is triggered 

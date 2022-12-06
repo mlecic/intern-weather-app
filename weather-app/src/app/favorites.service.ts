@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
-import { FAVORITES } from './utils/constants';
 import { Subject } from 'rxjs';
+import { FAVORITES } from './utils/constants';
 
 export interface Favorite {
   id: number;
-  name: string;
+  cityName: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoritesService {
+  favorites$ = new Subject<Favorite[]>();
 
   constructor() { }
 
@@ -18,6 +19,7 @@ export class FavoritesService {
     let allFavorites = this.getFavorites() || [];
     allFavorites.push({ id, cityName });
     window.localStorage.setItem(FAVORITES, JSON.stringify(allFavorites));
+    this.favorites$.next(allFavorites);
   }
 
   public getFavorites() {
