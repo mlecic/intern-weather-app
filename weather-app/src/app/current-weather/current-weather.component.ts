@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CurrentWeatherService, CurrentWeather, Weather } from '../current-weather.service';
 import { FavoritesService } from '../favorites.service';
+import { ICON_END, ICON_START } from '../utils/constants';
 
 @Component({
   selector: 'app-current-weather',
@@ -44,7 +45,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
         this.error = false;
         this.response = data;     
         this.iconValue = this.response.weather[0].icon;
-        this.imagePath = `https://openweathermap.org/img/wn/${this.iconValue}@2x.png`;
+        this.imagePath = `${ICON_START}${this.iconValue}${ICON_END}`;
       });
 
     // Get current weather errors
@@ -61,6 +62,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.currentCityWeatherSub.unsubscribe();
+    this.currentCityWeatherErrorsSub.unsubscribe();
   }
 
 }

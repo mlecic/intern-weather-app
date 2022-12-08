@@ -3,7 +3,7 @@
     but only visible once it gets response.
  -->
 <div *ngIf="response && !error">
-    <h2>City: {{ response.name }}</h2>
+    <h2>City: {{ response.name }}, {{ response.sys.country }}</h2>
     <button (click)="addToFavorites()">+ Add to favorites</button>
     <img [src]="imagePath" [alt]="response.weather[0].description">    
     <h4>Coordinates: <br>lat: {{ response.coord.lat }}, lon: {{ response.coord.lon }}</h4>
@@ -15,5 +15,5 @@
 </div>
 
 <div *ngIf="error">
-    <h1>City not found</h1>
+    <h1 class="error">City not found...</h1>
 </div> 

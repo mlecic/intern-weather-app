@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { CurrentWeatherService } from '../current-weather.service';
 import { Favorite, FavoritesService } from '../favorites.service';
 
@@ -20,7 +20,6 @@ export class FavCitiesComponent implements OnInit {
     this.favoritesService.favorites$.subscribe(favorites => {
       this.allCities = favorites;
     });
-    
   }
 
   onClickedFav(event: MouseEvent, cityName: string) {

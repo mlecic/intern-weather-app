@@ -10,6 +10,7 @@ import { SearchCityComponent } from './search-city/search-city.component';
 import { FormsModule } from '@angular/forms';
 import { AirPollutionComponent } from './air-pollution/air-pollution.component';
 import { FavCitiesComponent } from './fav-cities/fav-cities.component';
+import { DailyForecastComponent } from './daily-forecast/daily-forecast.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { FavCitiesComponent } from './fav-cities/fav-cities.component';
     CurrentWeatherComponent,
     SearchCityComponent,
     AirPollutionComponent,
-    FavCitiesComponent
+    FavCitiesComponent,
+    DailyForecastComponent,
   ],
   imports: [
     BrowserModule,
