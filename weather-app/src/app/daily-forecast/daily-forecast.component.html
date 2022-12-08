@@ -1,0 +1,11 @@
+<div *ngIf="response && !error" >
+    <h2>5 days forecast</h2>
+    <div class="container">
+        <div *ngFor="let item of listForecast">
+            <h4>{{ item.dt_txt | date: 'fullDate' }}</h4>
+            <img [src]="item.imagePath" [alt]="item.description">
+            <h4>Temperature: {{ item.temp }} °C</h4>
+        </div>
+    </div>
+    
+</div>
