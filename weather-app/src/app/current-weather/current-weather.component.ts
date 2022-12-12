@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CurrentWeatherService, CurrentWeather, Weather } from '../current-weather.service';
-import { FavoritesService } from '../favorites.service';
+import { Favorite, FavoritesService } from '../favorites.service';
 import { ICON_END, ICON_START } from '../utils/constants';
 
 @Component({
@@ -26,6 +26,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
 
   currentCityWeatherSub: Subscription = new Subscription();
   currentCityWeatherErrorsSub: Subscription = new Subscription();
+  currentFavoritesSub: Subscription = new Subscription();
 
   constructor(private currentWeatherService: CurrentWeatherService, 
               private favoritesService: FavoritesService) { }
@@ -46,8 +47,9 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
         this.response = data;     
         this.iconValue = this.response.weather[0].icon;
         this.imagePath = `${ICON_START}${this.iconValue}${ICON_END}`;
-               
-        this.checkCity();
+        
+        // Check if current city is in favs
+        this.favCity = this.favoritesService.checkCity(this.response.id);
       });
 
     // Get current weather errors
@@ -56,27 +58,25 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
       console.log("Bad city name", error);
       this.error = true;
     });
-  }
 
-  checkCity(): void {
-    const allFavs = this.favoritesService.getFavorites();
-    
-    this.favCity = !!allFavs.filter((element: any) => element.id === this.response.id).length;
+    // Get current local storage of fav cities
+    this.currentFavoritesSub = this.favoritesService.favorites$.subscribe((favorites: Favorite[]) => {
+      this.favCity = this.favoritesService.checkCity(this.response.id, favorites);
+    });
   }
 
   addToFavorites(): void {
     this.favoritesService.addFavorite(this.response.id, this.response.name);
-    this.checkCity();
   }
 
   deleteFromFavorites(): void {
     this.favoritesService.deleteFavorite(this.response.id);
-    this.checkCity();
   }
 
   ngOnDestroy(): void {
     this.currentCityWeatherSub.unsubscribe();
     this.currentCityWeatherErrorsSub.unsubscribe();
+    this.currentFavoritesSub.unsubscribe();
   }
 
 }

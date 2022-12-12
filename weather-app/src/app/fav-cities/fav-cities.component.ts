@@ -26,4 +26,9 @@ export class FavCitiesComponent implements OnInit {
     event.preventDefault();
     this.currentWeatherService.fetchCity(cityName);
   }
+
+  onDeletedFav(event: MouseEvent, id: number) {
+    event.preventDefault();
+    this.favoritesService.deleteFavorite(id);
+  }
 }
