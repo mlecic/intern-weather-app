@@ -46,7 +46,6 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
         this.response = data;     
         this.iconValue = this.response.weather[0].icon;
         this.imagePath = `${ICON_START}${this.iconValue}${ICON_END}`;
-        this.favCity = false;
                
         this.checkCity();
       });
@@ -61,22 +60,18 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
 
   checkCity(): void {
     const allFavs = this.favoritesService.getFavorites();
-
-    allFavs.filter((element: any) => {
-      if(element.id === this.response.id){
-        this.favCity = true;
-      }      
-    });
+    
+    this.favCity = !!allFavs.filter((element: any) => element.id === this.response.id).length;
   }
 
   addToFavorites(): void {
     this.favoritesService.addFavorite(this.response.id, this.response.name);
-    this.favCity = true;
+    this.checkCity();
   }
 
   deleteFromFavorites(): void {
     this.favoritesService.deleteFavorite(this.response.id);
-    this.favCity = false;
+    this.checkCity();
   }
 
   ngOnDestroy(): void {
