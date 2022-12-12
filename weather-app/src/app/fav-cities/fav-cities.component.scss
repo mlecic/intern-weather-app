@@ -1,0 +1,13 @@
+h3 {
+    cursor: pointer;   
+}
+
+h3:hover {
+    color: red;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 10%;
+}

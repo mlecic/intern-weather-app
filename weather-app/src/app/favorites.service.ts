@@ -28,13 +28,16 @@ export class FavoritesService {
   }
 
   public deleteFavorite(id: number) {
-    // get all, find one, take that one, delete it, return all
-    const allFavs = this.getFavorites();
-    const newAllFavs =  allFavs.filter((element: any) => element.id !== id);
-
+    // Get all except the targeted one, put it in the new Obj
+    const newAllFavs =  this.getFavorites().filter((element: any) => element.id !== id);
+    // Set filtered Obj as new, shoot new Obsevrable
     window.localStorage.setItem(FAVORITES, JSON.stringify(newAllFavs));
-    this.favorites$.next(newAllFavs);
-
+    this.favorites$.next(newAllFavs);    
+  }
+  
+  public checkCity(cityID: number, favorites?: Favorite[]): boolean {
+    const favs = !!favorites ? favorites :  this.getFavorites();    
+    return favs.filter((element: any) => element.id === cityID).length; 
   }
 
 }
