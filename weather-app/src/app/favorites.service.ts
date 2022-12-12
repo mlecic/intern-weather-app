@@ -26,4 +26,15 @@ export class FavoritesService {
     const favorites = window.localStorage.getItem(FAVORITES);
     return favorites ? JSON.parse(favorites) : [];
   }
+
+  public deleteFavorite(id: number) {
+    // get all, find one, take that one, delete it, return all
+    const allFavs = this.getFavorites();
+    const newAllFavs =  allFavs.filter((element: any) => element.id !== id);
+
+    window.localStorage.setItem(FAVORITES, JSON.stringify(newAllFavs));
+    this.favorites$.next(newAllFavs);
+
+  }
+
 }

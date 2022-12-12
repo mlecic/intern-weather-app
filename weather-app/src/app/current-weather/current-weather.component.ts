@@ -15,7 +15,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   iconValue: Weather["icon"];
   imagePath = '';
   error = false;
-
+  favCity = false;
 
   /*
     currentCityWeatherSub is a Subsription, which will be 
@@ -46,6 +46,9 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
         this.response = data;     
         this.iconValue = this.response.weather[0].icon;
         this.imagePath = `${ICON_START}${this.iconValue}${ICON_END}`;
+        this.favCity = false;
+               
+        this.checkCity();
       });
 
     // Get current weather errors
@@ -56,8 +59,24 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
     });
   }
 
+  checkCity(): void {
+    const allFavs = this.favoritesService.getFavorites();
+
+    allFavs.filter((element: any) => {
+      if(element.id === this.response.id){
+        this.favCity = true;
+      }      
+    });
+  }
+
   addToFavorites(): void {
     this.favoritesService.addFavorite(this.response.id, this.response.name);
+    this.favCity = true;
+  }
+
+  deleteFromFavorites(): void {
+    this.favoritesService.deleteFavorite(this.response.id);
+    this.favCity = false;
   }
 
   ngOnDestroy(): void {
